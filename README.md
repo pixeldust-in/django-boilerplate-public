@@ -12,7 +12,7 @@ sudo -u postgres -i
 ```
 Copy paste below commands till EOF and press enter:
 ```bash
-export DB_NAME='vms'
+export DB_NAME='project-name'
 export DB_OWNER=$DB_NAME
 export DB_PASSWORD=devpassword
 psql <<EOF
