@@ -1,0 +1,8 @@
+bandit
+black
+ipdb
+isort
+jupyterlab
+pre-commit
+prospector
+SQLAlchemy

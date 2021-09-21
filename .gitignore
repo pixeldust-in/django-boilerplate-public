@@ -1,0 +1,112 @@
+celerybeat-schedule
+# Created by https://www.gitignore.io
+media/
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+
+.python-version
+.env
+.azure-env*
+.venv
+.appname
+*.pyc
+*.egg-info
+db.sqlite3
+*.sql
+*.bkp
+.vscode/
+*.log
+data/
+.mypy_cache/
+.idea/
+*.ipynb_checkpoints
+#  static stuff
+static/css/
+node_modules/
+venv
+/assets/
+
+# celery redis stuff
+dump.rdb
+celerybeat-schedule.*
+celerybeat-schedule
+notebook/data
+nbs/
+.python-version
+db.sqlite3
+# src/scripts/google-credentials.json
