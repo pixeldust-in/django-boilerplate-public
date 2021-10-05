@@ -6,3 +6,5 @@ jupyterlab
 pre-commit
 prospector
 SQLAlchemy
+django-sslserver
+django-debug-toolbar
