@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "rest_framework",
     # custom
     "core",
+    # Keep this at the end
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [
@@ -205,8 +207,6 @@ AUTH_USER_MODEL = "core.User"
 # Rest framework
 REST_FRAMEWORK = {
     "DATE_INPUT_FORMATS": ["%d-%m-%Y", "%Y-%m-%d"],
-    # "DEFAULT_PAGINATION_CLASS": "core.pagination.PageNumberPagination",
-    # "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_THROTTLE_CLASSES": (
         "rest_framework.throttling.AnonRateThrottle",
@@ -219,3 +219,10 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ],
 }
+
+
+if DEBUG:
+    INTERNAL_IPS = ("127.0.0.1", "localhost")
+    MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
+    INSTALLED_APPS += ("debug_toolbar", "sslserver")
+
