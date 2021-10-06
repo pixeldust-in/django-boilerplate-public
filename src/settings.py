@@ -31,6 +31,10 @@ DEBUG = config("DEBUG")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
+# Allowed host for X_HOST headers
+ALLOWED_ORIGINAL_HOST = config("ALLOWED_ORIGINAL_HOST", default="")
+X_FRAME_OPTIONS = "DENY"
+
 # Email config
 EMAIL_BACKEND = config(
     "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
@@ -225,4 +229,13 @@ if DEBUG:
     INTERNAL_IPS = ("127.0.0.1", "localhost")
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
     INSTALLED_APPS += ("debug_toolbar", "sslserver")
-
+else:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_HSTS_SECONDS = 60 * 60
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = "same-origin"
+    SECURE_BROWSER_XSS_FILTER = True
