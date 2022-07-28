@@ -1,3 +1,4 @@
+ansible
 bandit
 black
 ipdb
@@ -8,3 +9,4 @@ prospector
 SQLAlchemy
 django-sslserver
 django-debug-toolbar
+python-dotenv==0.20.0
