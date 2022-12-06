@@ -226,6 +226,27 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Redis config
+REDIS_CONN_STRING = config("REDIS_CONN_STRING", default="redis://localhost:6379")
+REDIS_CACHE_STORE = config("REDIS_CACHE_STORE", cast=int, default=0)
+
+
+# Redis Cache backend
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"{REDIS_CONN_STRING}/{REDIS_CACHE_STORE}",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "REDIS_CLIENT_KWARGS": {"ssl": True},
+        },
+    },
+    "dummy": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"},
+}
+
+
+
+
 
 if DEBUG:
     INTERNAL_IPS = ("127.0.0.1", "localhost")
