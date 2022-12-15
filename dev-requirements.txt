@@ -1,12 +1,12 @@
 ansible
 bandit
 black
+django-debug-toolbar
+django-sslserver
 ipdb
 isort
 jupyterlab
 pre-commit
 prospector
+python-dotenv
 SQLAlchemy
-django-sslserver
-django-debug-toolbar
-python-dotenv==0.20.0
