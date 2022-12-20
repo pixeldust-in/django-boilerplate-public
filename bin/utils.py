@@ -1,10 +1,12 @@
 import logging
 import os
 import sys
+from pathlib import Path
 
 import requests
 
 DOPPLER_TOKEN = os.environ.get("DOPPLER_TOKEN", None)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 logger = logging.getLogger(__name__)
 
@@ -28,3 +30,7 @@ def get_doppler_envs(doppler_token, deploy_env, required_secrets="*"):
         secrets = response.json()["secrets"]
         secrets = {k: v["raw"] for k, v in secrets.items() if v["raw"] != ""}
         return secrets
+
+
+def get_env_file_path(deploy_env):
+    return Path(BASE_DIR, "deploy/docker/", deploy_env, f".azure-{deploy_env}.env")
