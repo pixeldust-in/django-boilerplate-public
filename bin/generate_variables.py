@@ -65,8 +65,11 @@ def get_random_string(length, allowed_chars=RANDOM_STRING_CHARS):
     return "".join(secrets.choice(allowed_chars) for i in range(length))
 
 
-ENVS = get_doppler_envs()
+def get_readable_app_name():
+    return " ".join(map(lambda x: x.capitalize(), app_name.split("_")))
 
+
+ENVS = get_doppler_envs()
 
 CONFIG = {
     # Misc
@@ -75,7 +78,7 @@ CONFIG = {
     "ALLOWED_HOSTS": "*",
     "ALLOWED_ORIGINAL_HOST": ["*", "localhost"],
     "EMAIL_FROM_EMAIL": "info@pgtry.com",
-    "EMAIL_FROM_NAME": f"P&G {app_name.capitalize()}",
+    "EMAIL_FROM_NAME": f"P&G {get_readable_app_name()}",
     "APP_SECRET_KEY": get_random_string(40),
     "PGCRYPTO_KEY": get_random_string(9),
     # VFirst
@@ -86,6 +89,8 @@ CONFIG = {
     "VFIRST_SMS_API_KEY": ENVS["VFIRST_SMS_API_KEY"],
     # Infra
     "DB_HOST": ENVS["DB_HOST"],
+    "DB_ROOT_USER": ENVS["DB_ROOT_USER"],
+    "DB_ROOT_PASSWORD": ENVS["DB_ROOT_PASSWORD"],
     "POSTGRES_USER": f"{app_name}{ENVS['POSTGRES_USER']}",
     "POSTGRES_DB": f"{app_name}",
     "POSTGRES_PASSWORD": get_random_string(15),
