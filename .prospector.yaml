@@ -9,3 +9,4 @@ pylint:
     - arguments-differ
     - protected-access
     - unused-argument
+    - logging-too-many-args

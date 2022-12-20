@@ -9,7 +9,7 @@ import secrets
 import sys
 from pathlib import Path
 
-import requests
+from utils import get_doppler_envs
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ if not DOPPLER_TOKEN or len(sys.argv) != 3:
     print(
         """
     Please pass valid arguents as
-     DOPPLER_TOKEN=<token> ./bin/generate_variables.py <environment> <app_name>
+    DOPPLER_TOKEN=<token> ./bin/generate_variables.py <environment> <app_name>
     e.g. ./bin/generate_variables.py prod/dev safalta
     """
     )
@@ -39,22 +39,6 @@ if "pgtry" in app_name or "pg" in app_name:
     sys.exit(0)
 
 
-def get_doppler_envs():
-    url = f"https://api.doppler.com/v3/configs/config/secrets?project=pgtry&config={deploy_env}&include_dynamic_secrets=false"
-    headers = {"accept": "application/json", "authorization": f"Bearer {DOPPLER_TOKEN}"}
-
-    response = requests.get(url, headers=headers, timeout=10)
-    if response.status_code != 200:
-        logger.exception(
-            "Error fetching secrets from doppler - Response >>> %s", response.text
-        )
-        sys.exit(0)
-    else:
-        secrets = response.json()["secrets"]
-        secrets = {k: v["raw"] for k, v in secrets.items() if v["raw"] != ""}
-        return secrets
-
-
 # initializing size of string
 RANDOM_STRING_CHARS = (
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#&*()"
@@ -69,7 +53,7 @@ def get_readable_app_name():
     return " ".join(map(lambda x: x.capitalize(), app_name.split("_")))
 
 
-ENVS = get_doppler_envs()
+ENVS = get_doppler_envs(DOPPLER_TOKEN, deploy_env)
 
 CONFIG = {
     # Misc
@@ -89,12 +73,10 @@ CONFIG = {
     "VFIRST_SMS_API_KEY": ENVS["VFIRST_SMS_API_KEY"],
     # Infra
     "DB_HOST": ENVS["DB_HOST"],
-    "DB_ROOT_USER": ENVS["DB_ROOT_USER"],
-    "DB_ROOT_PASSWORD": ENVS["DB_ROOT_PASSWORD"],
     "POSTGRES_USER": f"{app_name}{ENVS['POSTGRES_USER']}",
     "POSTGRES_DB": f"{app_name}",
     "POSTGRES_PASSWORD": get_random_string(15),
-    "DB_PORT": "5432",
+    "DB_PORT": ENVS["DB_PORT"],
     "REDIS_CACHE_STORE": "0",
     "REDIS_HOST": ENVS["REDIS_HOST"],
     "REDIS_PASSWORD": ENVS["REDIS_PASSWORD"],
@@ -130,11 +112,12 @@ def format_value(val):
 
 def write_env_file():
     file_name = Path(f"deploy/docker/{deploy_env}/.env")
-    with open(file_name, "a", encoding="utf-8") as file:
+    with open(file_name, "w", encoding="utf-8") as file:
         for key, value in CONFIG.items():
             file.write(
                 f'{key}="{format_value(value)}"\n',
             )
+    print(f"Env file written to {file_name}")
 
 
 if __name__ == "__main__":
