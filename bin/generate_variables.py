@@ -7,9 +7,8 @@ import logging
 import os
 import secrets
 import sys
-from pathlib import Path
 
-from utils import get_doppler_envs
+from utils import get_doppler_envs, get_env_file_path
 
 logger = logging.getLogger(__name__)
 
@@ -85,7 +84,7 @@ CONFIG = {
     "DOCKER_REGISTRY_SERVER_URL": ENVS["DOCKER_REGISTRY_SERVER_URL"],
     "DOCKER_REGISTRY_SERVER_USERNAME": ENVS["DOCKER_REGISTRY_SERVER_USERNAME"],
     "DOCKER_REGISTRY_SERVER_PASSWORD": ENVS["DOCKER_REGISTRY_SERVER_PASSWORD"],
-    "DOCKER_CUSTOM_IMAGE_NAME": f"{ENVS['DOCKER_CUSTOM_IMAGE_NAME']}/pgtry-{app_name}:{deploy_env}",
+    "DOCKER_CUSTOM_IMAGE_NAME": f"{ENVS['DOCKER_CUSTOM_IMAGE_NAME']}pgtry-{app_name}:{deploy_env}",
     # Docker
     "DIAGNOSTICS_AZUREBLOBRETENTIONINDAYS": "90",
     "DOCKER_ENABLE_CI": "true",
@@ -111,7 +110,7 @@ def format_value(val):
 
 
 def write_env_file():
-    file_name = Path(f"deploy/docker/{deploy_env}/.env")
+    file_name = get_env_file_path(deploy_env)
     with open(file_name, "w", encoding="utf-8") as file:
         for key, value in CONFIG.items():
             file.write(
