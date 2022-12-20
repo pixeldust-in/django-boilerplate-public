@@ -6,17 +6,15 @@ Usage: DOPPLER_TOKEN=<token> ./bin/generate_variables.py <environment> <app_name
 import logging
 import os
 import sys
-from pathlib import Path
 
 import psycopg2
 from dotenv import dotenv_values
 from psycopg2 import sql
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from utils import get_doppler_envs
+from utils import get_doppler_envs, get_env_file_path
 
 logger = logging.getLogger(__name__)
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 DOPPLER_TOKEN = os.environ.get("DOPPLER_TOKEN", None)
 
@@ -43,7 +41,7 @@ doppler_envs = get_doppler_envs(
     deploy_env,
     ["DB_HOST", "DB_PORT", "DB_ROOT_USER", "DB_ROOT_PASSWORD"],
 )
-local_envs = dotenv_values(Path(BASE_DIR, "deploy/docker/", deploy_env, ".env"))
+local_envs = dotenv_values(get_env_file_path(deploy_env))
 
 envs = {**doppler_envs, **local_envs}
 
