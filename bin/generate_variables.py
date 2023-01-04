@@ -58,6 +58,7 @@ CONFIG = {
     # Misc
     "COMPOSE_NAME": app_name,
     "LOG_LEVEL": "INFO",
+    "IS_PRODUCTION": ENVS["IS_PRODUCTION"],
     "ALLOWED_HOSTS": "*",
     "ALLOWED_ORIGINAL_HOST": ["*", "localhost"],
     "EMAIL_FROM_EMAIL": "info@pgtry.com",
