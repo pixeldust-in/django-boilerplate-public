@@ -29,6 +29,7 @@ PGCRYPTO_KEY = config("PGCRYPTO_KEY", default="sample-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+IS_PRODUCTION = config("IS_PRODUCTION", default=False, cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv(), default="*")
 
