@@ -44,24 +44,5 @@ db:
 	# cd app && yarn && yarn build
 
 # target: edit - Decrypt and edit ansible secrets file
-update_dev_env_secrets:
-	export EDITOR='code -w' && ansible-vault edit deploy/docker/dev/.azure-dev.env
-
-update_prod_env_secrets:
-	export EDITOR='code -w' && ansible-vault edit deploy/docker/prod/.azure-prod.env
-
-# target: encrypt_dev_env - Encrypt dev env to project dir
-encrypt_dev_env:
-	ansible-vault encrypt deploy/docker/dev/.azure-dev.env
-
-# target: encrypt_prod_env - Encrypt prod env to project dir
-encrypt_prod_env:
-	ansible-vault encrypt deploy/docker/prod/.azure-prod.env
-
-# target: decrypt_dev_env - Decrypt dev env to project dir
-decrypt_dev_env:
-	ansible-vault decrypt deploy/docker/dev/.azure-dev.env --output=.azure-dev.env
-
-# target: decrypt_prod_env - Decrypt prod env to project dir
-decrypt_prod_env:
-	ansible-vault decrypt deploy/docker/prod/.azure-prod.env --output=.azure-prod.env
+update_env_secrets:
+	export EDITOR='code -w' && ansible-vault edit deploy/group_vars/dev.yml

@@ -24,36 +24,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("APP_SECRET_KEY", default="sample-key")
-PGCRYPTO_KEY = config("PGCRYPTO_KEY", default="sample-key")
+SECRET_KEY = config("SECRET_KEY")
+PGCRYPTO_KEY = config("PGCRYPTO_KEY", default=None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
-ENABLE_ADMIN_EMAILS = config("ENABLE_ADMIN_EMAILS", default=False, cast=bool)
+DEBUG = config("DEBUG")
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv(), default="*")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 # Allowed host for X_HOST headers
 ALLOWED_ORIGINAL_HOST = config("ALLOWED_ORIGINAL_HOST", default="")
 X_FRAME_OPTIONS = "DENY"
 
 # Email config
-EMAIL_BACKEND = config("EMAIL_BACKEND", default="pg.services.emails.backend.EmailBackend")
-EMAIL_FROM_EMAIL = config("EMAIL_FROM_EMAIL", default="info@pgtry.com")
-EMAIL_FROM_NAME = config("EMAIL_FROM_NAME", default="P&G")
-VF_EMAIL_ENDPOINT = config("VF_EMAIL_ENDPOINT")
-VF_EMAIL_USERNAME = config("VF_EMAIL_USERNAME")
-VF_EMAIL_PASSWORD = config("VF_EMAIL_PASSWORD")
-VFIRST_SMS_API_URL = config("VFIRST_SMS_API_URL")
-VFIRST_SMS_API_KEY = config("VFIRST_SMS_API_KEY")
-OTP_TIMEOUT_SECONDS = 10 * 60
-OTP_LENGTH = 4
-SEND_SMS = not DEBUG
-
+EMAIL_BACKEND = config(
+    "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_HOST = config("EMAIL_HOST", default="localhost")
+EMAIL_PORT = config("EMAIL_PORT", default=2525, cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=None)
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = config("EMAIL_HOST_PASSWORD", default=None)
 
 SITE_ID = 1
-
-URL_PREFIX = ""
 # Application definition
 
 INSTALLED_APPS = [
@@ -67,16 +61,13 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     # custom
-    "pg", #internal package for P&G related dependencies
     "core",
     # Keep this at the end
     "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [
-    "pg.middleware.DisallowedHostMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -112,10 +103,10 @@ WSGI_APPLICATION = "wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("POSTGRES_DB", default=None),
-        "USER": config("POSTGRES_USER", default=None),
-        "PASSWORD": config("POSTGRES_PASSWORD", default=None),
-        "HOST": config("DB_HOST", default=None),
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("DB_HOST"),
         "PORT": config("DB_PORT", default=5432),
     }
 }
@@ -166,31 +157,8 @@ STATICFILES_DIRS = [
     MEDIA_ROOT,
 ]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 STATIC_URL = "/assets/"
 MEDIA_URL = "/media/"
-
-if not DEBUG:
-    SET_HTTP_X_FORWARDED_HOST = config(
-        "SET_HTTP_X_FORWARDED_HOST", default=False, cast=bool
-    )
-    USE_X_FORWARDED_HOST = SET_HTTP_X_FORWARDED_HOST
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-    def force_download_pdfs(headers, path, url):  # noqa
-        if path.endswith(".pdf"):
-            headers["Content-Disposition"] = "attachment"
-
-    WHITENOISE_ADD_HEADERS_FUNCTION = force_download_pdfs
-
-    COMPRESS_STORAGE = STATICFILES_STORAGE
-
-    AZURE_OVERWRITE_FILES = True
-    AZURE_URL_EXPIRATION_SECS = 3600
-
-    STATIC_URL = f"/{URL_PREFIX}/assets/"
-    MEDIA_URL = f"/{URL_PREFIX}/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -212,7 +180,6 @@ LOGGING = {
         "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
         "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"},
         "request_id": {"()": "log_request_id.filters.RequestIDFilter"},
-        "require_mail_true": {"()": "pg.log.RequireMailTrue"},
     },
     "handlers": {
         "console": {
@@ -220,13 +187,12 @@ LOGGING = {
             "formatter": "verbose",
             "filters": ["request_id"],
         },
-        "mail_admins_custom": {
-            "level": "ERROR",
-            "filters": ["require_mail_true", "request_id"],
-            "class": "pg.log.AdminEmailHandler",
-            "include_html": True,
-            "formatter": "verbose",
-        },
+        # "mail_admins_custom": {
+        #     "level": "ERROR",
+        #     "filters": ["request_id"],
+        #     "include_html": True,
+        #     "formatter": "verbose",
+        # },
     },
     "loggers": {
         "": {
