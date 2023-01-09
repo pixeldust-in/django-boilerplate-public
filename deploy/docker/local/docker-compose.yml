@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+    oralb-shiny-clean-local:
+        image: {app_name}:local
+        env_file: ../../../.env
+        build:
+            context: ../../../
+            args:
+                - USE_AZURE_ENVIRONMENT=$USE_AZURE_ENVIRONMENT
+                - USE_BLOB_STORAGE=$USE_BLOB_STORAGE
+                - AZ_CDN_DOMAIN=$AZ_CDN_DOMAIN
+                - AZ_PRIVATE_STORAGE_CONTAINER=$AZ_PRIVATE_STORAGE_CONTAINER
+                - AZ_PUBLIC_STORAGE_CONTAINER=$AZ_PUBLIC_STORAGE_CONTAINER
+                - AZ_STORAGE_ACCOUNT_NAME=$AZ_STORAGE_ACCOUNT_NAME
+                - AZ_STORAGE_KEY=$AZ_STORAGE_KEY
+        expose:
+            - "8000"
+        volumes:
+            - ../../../:/app
+
+    nginx:
+        image: nginx:latest
+        volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+        - oralb-shiny-clean-local
+        ports:
+        - "4000:4000"

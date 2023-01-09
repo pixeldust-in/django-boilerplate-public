@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from core import views as core_views
 
 urlpatterns = [
-    path("super-manager/", admin.site.urls),
+    path('', include('pg.urls')),
+    #path("super-manager/", admin.site.urls),
 ]
 
 
