@@ -226,13 +226,11 @@ REST_FRAMEWORK = {
 }
 
 # Redis config
-
 REDIS_CONN_STRING = config("REDIS_CONN_STRING", default="redis://localhost:6379")
 REDIS_CACHE_STORE = config("REDIS_CACHE_STORE", cast=int, default=0)
 
 
 # Redis Cache backend
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
