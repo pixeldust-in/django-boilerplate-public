@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import logging.config
-import os
 from pathlib import Path
 
 from decouple import Csv, config
@@ -227,11 +226,13 @@ REST_FRAMEWORK = {
 }
 
 # Redis config
+
 REDIS_CONN_STRING = config("REDIS_CONN_STRING", default="redis://localhost:6379")
 REDIS_CACHE_STORE = config("REDIS_CACHE_STORE", cast=int, default=0)
 
 
 # Redis Cache backend
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -243,9 +244,6 @@ CACHES = {
     },
     "dummy": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"},
 }
-
-
-
 
 
 if DEBUG:
