@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import logging.config
-import os
 from pathlib import Path
 
 from decouple import Csv, config
@@ -243,9 +242,6 @@ CACHES = {
     },
     "dummy": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"},
 }
-
-
-
 
 
 if DEBUG:

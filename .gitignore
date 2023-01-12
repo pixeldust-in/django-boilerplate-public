@@ -110,7 +110,7 @@ nbs/
 .python-version
 db.sqlite3
 # src/scripts/google-credentials.json
-app/webpack-stats.json 
+app/webpack-stats.json
 
 #env files
 .azure-*.env
