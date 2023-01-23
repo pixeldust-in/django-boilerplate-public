@@ -23,7 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config(
+    "SECRET_KEY",
+)
 PGCRYPTO_KEY = config("PGCRYPTO_KEY", default=None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -102,10 +104,10 @@ WSGI_APPLICATION = "wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("POSTGRES_DB"),
-        "USER": config("POSTGRES_USER"),
-        "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": config("DB_HOST"),
+        "NAME": config("POSTGRES_DB", default=None),
+        "USER": config("POSTGRES_USER", default=None),
+        "PASSWORD": config("POSTGRES_PASSWORD", default=None),
+        "HOST": config("DB_HOST", default="localhost"),
         "PORT": config("DB_PORT", default=5432),
     }
 }
