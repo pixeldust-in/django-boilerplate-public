@@ -46,7 +46,7 @@ EMAIL_PORT = config("EMAIL_PORT", default=2525, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=None)
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = config("EMAIL_HOST_PASSWORD", default=None)
+DEFAULT_FROM_EMAIL = config("EMAIL_HOST_USER", default=None)
 
 SITE_ID = 1
 # Application definition
@@ -225,6 +225,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
 }
 
 # Redis config
