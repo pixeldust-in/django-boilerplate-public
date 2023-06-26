@@ -228,7 +228,12 @@ REST_FRAMEWORK = {
 }
 
 # Redis config
-REDIS_CONN_STRING = config("REDIS_CONN_STRING", default="redis://localhost:6379")
+REDIS_URL_SCHEME = config("REDIS_URL_SCHEME", default="redis")
+REDIS_HOST = config("REDIS_HOST", default="localhost")
+REDIS_PASSWORD = config("REDIS_PASSWORD", default="")
+REDIS_PORT = config("REDIS_PORT", cast=int, default=6379)
+REDIS_CACHE_STORE = config("REDIS_CACHE_STORE", cast=int, default=0)
+REDIS_CONN_STRING = config("REDIS_CONN_STRING", default=f"{REDIS_URL_SCHEME}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_CACHE_STORE}")
 REDIS_CACHE_STORE = config("REDIS_CACHE_STORE", cast=int, default=0)
 
 
