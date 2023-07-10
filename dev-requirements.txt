@@ -7,6 +7,6 @@ ipdb
 isort==5.11.4
 jupyterlab
 pre-commit==2.21.0
-prospector==1.7.7
+prospector==1.10.2
 pylint==2.13.0
 SQLAlchemy
