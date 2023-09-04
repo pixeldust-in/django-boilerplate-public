@@ -6,7 +6,7 @@ django-sslserver
 ipdb
 isort==5.11.4
 jupyterlab
-pre-commit==2.21.0
+pre-commit==3.4.0
 prospector==1.7.7
 pylint==2.13.0
 SQLAlchemy
